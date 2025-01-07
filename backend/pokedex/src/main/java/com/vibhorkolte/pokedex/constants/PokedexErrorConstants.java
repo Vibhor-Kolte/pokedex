@@ -1,5 +1,8 @@
 package com.vibhorkolte.pokedex.constants;
 
+import lombok.Getter;
+
+@Getter
 public enum PokedexErrorConstants {
 
     BAD_REQUEST("Bad Request","ERR_DEX_001",400),
@@ -19,15 +22,4 @@ public enum PokedexErrorConstants {
         this.httpsCode = httpsCode;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public Integer getHttpsCode() {
-        return httpsCode;
-    }
 }

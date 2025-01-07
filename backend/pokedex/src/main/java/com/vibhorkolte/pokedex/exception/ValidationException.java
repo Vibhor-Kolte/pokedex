@@ -1,7 +1,9 @@
 package com.vibhorkolte.pokedex.exception;
 
 import com.vibhorkolte.pokedex.constants.PokedexErrorConstants;
+import lombok.Getter;
 
+@Getter
 public class ValidationException extends RuntimeException {
 
     private final int httpStatus;
@@ -14,15 +16,4 @@ public class ValidationException extends RuntimeException {
         this.errorMessage = pokedexErrorConstants.getMessage();
     }
 
-    public int getHttpStatus() {
-        return httpStatus;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
 }
