@@ -2,7 +2,7 @@ package com.vibhorkolte.pokedex.exception.handler;
 
 import com.vibhorkolte.pokedex.constants.PokedexErrorConstants;
 import com.vibhorkolte.pokedex.exception.PokedexException;
-import com.vibhorkolte.pokedex.exception.ValidationException;
+import com.vibhorkolte.pokedex.exception.PokeApiException;
 import com.vibhorkolte.pokedex.exception.response.ErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,14 +30,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(PokedexException.class)
-    public ResponseEntity<ErrorResponse> handlePaymentException(PokedexException ex) {
+    public ResponseEntity<ErrorResponse> handlePokedexException(PokedexException ex) {
         HttpStatusCode httpStatusCode = HttpStatus.resolve(ex.getHttpStatus());
         ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode(), ex.getErrorMessage());
         return ResponseEntity.status(httpStatusCode).body(errorResponse);
     }
 
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
+    @ExceptionHandler(PokeApiException.class)
+    public ResponseEntity<ErrorResponse> handlePokeApiException(PokeApiException ex) {
         HttpStatusCode httpStatusCode = HttpStatus.resolve(ex.getHttpStatus());
         ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode(), ex.getErrorMessage());
         return ResponseEntity.status(httpStatusCode).body(errorResponse);
