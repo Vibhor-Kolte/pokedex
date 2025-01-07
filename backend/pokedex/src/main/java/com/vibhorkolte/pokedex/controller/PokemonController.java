@@ -30,6 +30,7 @@ public class PokemonController {
     @GetMapping("/pokemon/{name}")
     @Operation(summary = "Get Pokemon Details")
     public Mono<PokemonDetails> getPokemonDetails(@PathVariable String name) {
+        log.info("Received getPokemonDetails() for {}", name);
         return pokemonService.fetchPokemonDetails(name);
     }
 }
