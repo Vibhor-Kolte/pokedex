@@ -18,7 +18,7 @@ public class PokemonController {
     @Autowired
     private PokemonService pokemonService;
 
-    @GetMapping("/pokemon")
+    @GetMapping
     @Operation(summary = "Get Pokemon List")
     public Flux<Pokemon> getPokemonList(
             @RequestParam(defaultValue = "0") int offset,
@@ -27,7 +27,7 @@ public class PokemonController {
         return pokemonService.fetchPokemonList(offset, limit);
     }
 
-    @GetMapping("/pokemon/{name}")
+    @GetMapping("/{name}")
     @Operation(summary = "Get Pokemon Details")
     public Mono<PokemonDetails> getPokemonDetails(@PathVariable String name) {
         log.info("Received getPokemonDetails() for {}", name);
