@@ -12,4 +12,12 @@ public class Sprites {
 	private String front_female;
 	private String back_shiny;
 	private String front_shiny;
+	private Other other;
+
+	@Data
+	public static class Other{
+		private Sprites dream_world;
+		private Sprites home;
+		private Sprites showdown;
+	}
 }
