@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { usePokemonData } from "./usePokemonData";
-import { useUserData } from "./userUserData";
-import { useUser } from "@auth0/nextjs-auth0/client";
 const GloablContext = React.createContext();
 
 export const GlobalContextProvider = ({ children }) => {
-  const { user } = useUser();
   const {
     loading,
     fetchPokemon,
@@ -13,12 +10,6 @@ export const GlobalContextProvider = ({ children }) => {
     pokemonListDetails,
     fetchPokemonByName,
   } = usePokemonData();
-
-  const { userDetails, performAction, fetchUserDetails } = useUserData();
-
-  useEffect(() => {
-    if (user) fetchUserDetails();
-  }, [user]);
 
   return (
     <GloablContext.Provider
@@ -36,5 +27,13 @@ export const GlobalContextProvider = ({ children }) => {
 };
 
 export const useGlobalContext = () => {
-  return React.useContext(GloablContext);
+  const context = React.useContext(GloablContext);
+
+  // Add log to check the context value
+  console.log('Context in useGlobalContext:', context);
+
+  if (!context) {
+    throw new Error("useGlobalContext must be used within a GlobalContextProvider");
+  }
+  return context;
 };
