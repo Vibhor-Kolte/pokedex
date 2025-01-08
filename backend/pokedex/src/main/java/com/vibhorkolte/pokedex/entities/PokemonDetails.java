@@ -82,7 +82,7 @@ public class PokemonDetails {
     @Data
     public static class Type {
         private int slot;
-        private Type type;
+        private TypeDetail type;
 
         @Data
         public static class TypeDetail {
