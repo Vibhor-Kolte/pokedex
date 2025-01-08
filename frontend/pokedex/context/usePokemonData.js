@@ -1,12 +1,10 @@
-"use client"
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import log from 'loglevel';
 
 const pokedexBaseUrl = process.env.NEXT_PUBLIC_POKEDEX_BACKEND_BASE_URL;
-log.setLevel('debug');
+log.setLevel('info');
 
 export const usePokemonData = () => {
   const [loading, setLoading] = useState(false);
