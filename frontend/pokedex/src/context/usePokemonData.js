@@ -12,6 +12,7 @@ export const usePokemonData = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [allPokemon, setAllPokemon] = useState([]);
   const [pokemonListDetails, setPokemonListDetails] = useState([]);
+  const [activePokemon, setActivePokemon] = useState(null);
   const [originalPokemonListDetails, setOriginalPokemonListDetails] = useState(
     []
   );
@@ -75,7 +76,7 @@ export const usePokemonData = () => {
 
       setLoading(false);
       log.debug('API response for fetchPokemonByName:- ', res.data);
-
+      setActivePokemon(res.data);
       return res.data;
     } catch (error) {
       console.error("Error fetching pokemon by name", error);
@@ -102,6 +103,7 @@ export const usePokemonData = () => {
     loading,
     pokemonList,
     pokemonListDetails,
-    fetchPokemonByName
+    fetchPokemonByName,
+    activePokemon,
   };
 };
