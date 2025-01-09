@@ -1,9 +1,7 @@
 "use client";
 
 import { typeColor } from "@/utils/colors";
-import {
-  arrowAngleRight,
-} from "@/utils/Icons";
+import { arrowAngleRight } from "@/utils/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
