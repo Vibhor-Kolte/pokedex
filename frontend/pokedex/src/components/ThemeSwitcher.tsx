@@ -1,5 +1,4 @@
 import { useTheme } from "@/context/themeContext";
-import Image from "next/image";
 import { FaMoon, FaRegMoon } from "react-icons/fa";
 
 const ThemeSwitcher = () => {
