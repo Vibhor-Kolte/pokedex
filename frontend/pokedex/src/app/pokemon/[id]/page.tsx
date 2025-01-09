@@ -1,22 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
+
 import Header from "@/components/Header";
 import { useGlobalContext } from "@/context/globalContext";
 import { typeColor } from "@/utils/colors";
 import { Ruler, Weight } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, use} from "react";
 import log from 'loglevel';
 
 log.setLevel('info');
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
-function page({ params }: Props) {
+function Page({ params }: Props) {
   const { fetchPokemonByName, loading, activePokemon } = useGlobalContext();
-  const { id } = params;
+  const { id } = use(params);
 
   const barColor = typeColor[activePokemon?.types[0]?.type.name] || "#f9f1f1";
 
@@ -159,4 +162,4 @@ function page({ params }: Props) {
   );
 }
 
-export default page;
+export default Page;
