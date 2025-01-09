@@ -27,6 +27,8 @@ public class PokemonDetails {
     private List<Ability> abilities;
     private List<Forms> forms;
 
+    private Sprites sprites;
+
     private List<GameIndex> game_indices;
     private List<Object> held_items; // Adjust type if structure is known
     private List<Stat> stats;
@@ -80,7 +82,7 @@ public class PokemonDetails {
     @Data
     public static class Type {
         private int slot;
-        private Type type;
+        private TypeDetail type;
 
         @Data
         public static class TypeDetail {
