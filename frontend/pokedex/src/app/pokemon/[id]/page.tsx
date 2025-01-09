@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import Header from "@/components/Header";
 import { useGlobalContext } from "@/context/globalContext";
@@ -14,7 +16,7 @@ interface Props {
     id: string;
   };
 }
-function page({ params }: Props) {
+function Page({ params }: Props) {
   const { fetchPokemonByName, loading, activePokemon } = useGlobalContext();
   const { id } = params;
 
@@ -159,4 +161,4 @@ function page({ params }: Props) {
   );
 }
 
-export default page;
+export default Page;
