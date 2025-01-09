@@ -7,7 +7,7 @@ function SearchForm() {
   const { searchQuery, handleSearchChange } = useGlobalContext();
 
   return (
-    <form className="relative w-[80%] md:w-[50%]">
+    <form className="relative w-[80%] md:w-[30%]">
       <input
         type="text"
         value={searchQuery}
