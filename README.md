@@ -1,6 +1,18 @@
 # pokedex
 Pokemon Encyclopedia using PokéAPI
 
+Pokedex Home Screen
+![alt text](image.png)
+
+Filter and Sort Pokemons
+![alt text](image-1.png)
+
+View Pokemon Details
+![alt text](image-2.png)
+
+Search Feature
+![alt text](image-3.png)
+
 # Where we started from =>
 
 As part of this task, develop a search engine for Pokemon ( [A pokedex !](https://www.pokemon.com/us/pokedex/))
