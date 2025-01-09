@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "@/context/themeContext";
 import { typeColor } from "@/utils/colors";
 import { arrowAngleRight } from "@/utils/Icons";
 import Image from "next/image";
@@ -12,9 +13,14 @@ interface PokemonCardProps {
 
 function PokemonCard({ pokemon }: PokemonCardProps) {
   const router = useRouter();
+  const { theme } = useTheme();
 
   return (
-    <div className="relative p-4 bg-white rounded-xl shadow-sm flex flex-col gap-2">
+    <div className="relative p-4 bg-white rounded-xl shadow-sm flex flex-col gap-2"
+      style={{
+        backgroundImage: `url('${theme === "dark" ? "/container_bg.png" : "none"}')`,
+        width: "100%",
+      }}>
       <div className="flex justify-between items-center">
 
         <button

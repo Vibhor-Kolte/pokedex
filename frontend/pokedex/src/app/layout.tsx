@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ContextProvider from "@/providers/ContextProvider";
+import { ThemeProvider } from "@/context/themeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
         /> */}
         <link rel="icon" href="/pokeball.svg" />
       </head>
+      <ThemeProvider>
         <ContextProvider>
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -42,6 +44,7 @@ export default function RootLayout({
             {children}
           </body>
         </ContextProvider>
+      </ThemeProvider>
     </html>
   );
 }

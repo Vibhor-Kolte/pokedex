@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CircleDot, Delete, Ruler, SortAsc, Weight, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useTheme } from "@/context/themeContext";
 
 const pokemonTypes = [
   "Normal",
@@ -58,6 +59,8 @@ const pokemonAbilities = [
 
 function Filters() {
   const { handleFilterChange, filters, clearFilters } = useGlobalContext();
+  const { theme } = useTheme();
+
   return (
     <div className="mt-8 px-16 py-4 flex items-center justify-between">
       <div className="flex flex-wrap gap-4 items-center">
@@ -153,9 +156,10 @@ function Filters() {
 
       <Button
         onClick={clearFilters}
-        className="u-shadow-2 font-bold bg-[#6c5ce7] rounded-lg flex items-center gap-1"
+        className={`u-shadow-2 font-bold bg-[#6c5ce7] rounded-lg flex items-center gap-1 
+          ${theme === "dark" ? "text-white hover:bg-[#6c5ce7]" : "hover:bg-purple-600"}`}
       >
-        <Delete className="mr-2 h-5 w-5" />
+        <Delete className={`mr-2 h-5 w-5 ${theme === "dark" ? "text-white" : ""}`} />
         Clear Filters
       </Button>
     </div>

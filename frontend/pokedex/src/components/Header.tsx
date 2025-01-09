@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
+import { useTheme } from "@/context/themeContext";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 const menu = [
   {
@@ -16,10 +18,16 @@ const menu = [
 
 function Header() {
 
+  const { theme } = useTheme();
   const pathname = usePathname();
 
   return (
-    <header className="min-h-[10vh] px-16 py-6 w-full bg-white flex justify-between items-center shadow-sm">
+    <header className="min-h-[10vh] px-16 py-6 w-full bg-white flex justify-between items-center shadow-sm"
+      style={{
+        backgroundImage: `url('${theme === "light" ? "/container_bg.png" : "/body_gray_bg.png"}')`,
+        width: "100%",
+      }}>
+
       {/* Logo */}
       <Link href="/">
         <Image src={"/pokemon--logo.png"} width={120} height={90} alt="logo" />
@@ -33,18 +41,19 @@ function Header() {
               <Link
                 href={item.link}
                 className={`group py-2 px-6 text-sm flex flex-col items-center gap-2 font-bold rounded-lg transition-all duration-300
-                        ${pathname === item.link
+                  ${pathname === item.link
                     ? "bg-orange-500 text-white"
-                    : "text-gray-400"
+                    : theme === "dark"
+                      ? "text-white"
+                      : "text-gray-400"
                   }
                     `}
               >
-                {/* Dynamic Icon */}
                 <Image
                   src={
                     pathname === item.link
                       ? item.hoverIcon // Active state icon
-                      : item.defaultIcon // Default state icon
+                      : theme === "dark" ? item.hoverIcon : item.defaultIcon // Default state icon
                   }
                   width={40}
                   height={40}
@@ -60,6 +69,11 @@ function Header() {
           ))}
         </ul>
       </nav>
+
+      {/* Theme Toggle */}
+      <div className="flex items-center">
+        <ThemeSwitcher />
+      </div>
     </header>
   );
 }
