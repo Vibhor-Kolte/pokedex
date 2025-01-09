@@ -1,10 +1,13 @@
 package com.vibhorkolte.pokedex.service;
 
+import static com.vibhorkolte.pokedex.constants.PokedexErrorConstants.BAD_REQUEST;
 import static com.vibhorkolte.pokedex.constants.PokedexErrorConstants.POKEAPI_DOWNTIME;
 import static org.mockito.Mockito.*;
 
+import com.vibhorkolte.pokedex.entities.Pokemon;
 import com.vibhorkolte.pokedex.entities.PokemonDetails;
 import com.vibhorkolte.pokedex.exception.PokeApiException;
+import com.vibhorkolte.pokedex.model.PokemonListResponse;
 import com.vibhorkolte.pokedex.repository.PokemonRepository;
 import com.vibhorkolte.pokedex.service.impl.PokemonServiceImpl;
 import com.vibhorkolte.pokedex.util.PokeApiClient;
@@ -13,8 +16,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @SpringBootTest
 class PokemonServiceTest {
@@ -44,6 +51,69 @@ class PokemonServiceTest {
 
         when(pokemonRepository.findByName(pokemonName)).thenReturn(Mono.empty()); // Simulate cache miss
         when(pokeApiClient.fetchPokemonDetails(pokemonName)).thenReturn(Mono.just(pokemonDetails)); // Simulate PokeAPI call success
+    }
+
+    @Test
+    void fetchPokemonList_shouldReturnPokemonList() {
+        // Arrange
+        PokemonListResponse mockResponse = new PokemonListResponse();
+        mockResponse.setResults(Arrays.asList(new Pokemon("Pikachu",""), new Pokemon("Bulbasaur","")));
+
+        when(pokeApiClient.fetchPokemonList(0, 2)).thenReturn(Mono.just(mockResponse));
+
+        // Act
+        Flux<Pokemon> result = pokemonServiceImpl.fetchPokemonList(0, 2);
+
+        // Assert
+        StepVerifier.create(result)
+                .expectNextMatches(pokemon -> pokemon.getName().equals("Pikachu"))
+                .expectNextMatches(pokemon -> pokemon.getName().equals("Bulbasaur"))
+                .verifyComplete();
+    }
+
+    @Test
+    void fetchPokemonList_shouldHandleErrorGracefully() {
+        // Arrange
+        when(pokeApiClient.fetchPokemonList(0, 2)).thenReturn(Mono.error(new PokeApiException(BAD_REQUEST)));
+
+        // Act
+        Flux<Pokemon> result = pokemonServiceImpl.fetchPokemonList(0, 2);
+
+        // Assert
+        StepVerifier.create(result)
+                .expectError(PokeApiException.class)
+                .verify();
+    }
+
+    @Test
+    void fetchPokemonList_shouldReturnEmptyFlux_whenNoResults() {
+        // Arrange
+        PokemonListResponse mockResponse = new PokemonListResponse();
+        mockResponse.setResults(Collections.emptyList());
+
+        when(pokeApiClient.fetchPokemonList(0, 2)).thenReturn(Mono.just(mockResponse));
+
+        // Act
+        Flux<Pokemon> result = pokemonServiceImpl.fetchPokemonList(0, 2);
+
+        // Assert
+        StepVerifier.create(result)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void fetchPokemonList_shouldReturnMonoError_whenClientFails() {
+        // Arrange
+        when(pokeApiClient.fetchPokemonList(0, 2)).thenReturn(Mono.error(new RuntimeException("Client error")));
+
+        // Act
+        Flux<Pokemon> result = pokemonServiceImpl.fetchPokemonList(0, 2);
+
+        // Assert
+        StepVerifier.create(result)
+                .expectError(RuntimeException.class)
+                .verify();
     }
 
     @Test
