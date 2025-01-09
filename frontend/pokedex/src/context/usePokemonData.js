@@ -148,6 +148,61 @@ export const usePokemonData = () => {
     searchPokemon(value);
   }, 500);
 
+  //filter pokemon
+  const filterPokemon = () => {
+    const { type, ability, weight, height, sortOrder } = filters;
+    const query = searchQuery.toLowerCase();
+
+    let filteredPokemon = originalPokemonListDetails;
+
+    if (type) {
+      filteredPokemon = filteredPokemon.filter((pokemon) => {
+        return pokemon.types.some((t) => t.type.name === type);
+      });
+    }
+
+    if (ability) {
+      filteredPokemon = filteredPokemon.filter((pokemon) => {
+        return pokemon.abilities.some((a) => a.ability.name === ability);
+      });
+    }
+
+    if (weight) {
+      filteredPokemon = filteredPokemon.filter((pokemon) => {
+        return pokemon.weight >= weight;
+      });
+    }
+
+    if (height) {
+      filteredPokemon = filteredPokemon.filter((pokemon) => {
+        return pokemon.height >= height;
+      });
+    }
+
+    if (query) {
+      filteredPokemon = filteredPokemon.filter((pokemon) => {
+        return pokemon.name.toLowerCase().includes(query);
+      });
+    }
+
+    if (sortOrder) {
+      filteredPokemon =
+        sortOrder === "asc"
+          ? [...filteredPokemon].sort((a, b) => {
+              return a.name.localeCompare(b.name, undefined, {
+                sensitivity: "base",
+              });
+            })
+          : [...filteredPokemon].sort((a, b) => {
+              return b.name.localeCompare(a.name, undefined, {
+                sensitivity: "base",
+              });
+            });
+    }
+
+    setPokemonListDetails(filteredPokemon);
+  };
+
   // handle change for filters
   const handleFilterChange = (key, value) => {
     log.debug(`Filter key: ${key}, value: ${value}`);
@@ -168,6 +223,7 @@ export const usePokemonData = () => {
   };
 
   // -------------------Use Effects-------------------
+  // Initial Renders
   useEffect(() => {
     log.debug("Fetching initial Pokémon data...");
     fetchPokemon(); // Fetch initial Pokémon data
@@ -181,6 +237,11 @@ export const usePokemonData = () => {
       fetchPokemonDetails();
     }
   }, [pokemonList]);
+
+  // Filter Pokémon based on filters
+  useEffect(() => {
+    filterPokemon();
+  }, [filters, searchQuery]);
 
   return {
     loading,
