@@ -2,7 +2,6 @@
 import Header from "@/components/Header";
 import { useGlobalContext } from "@/context/globalContext";
 import { typeColor } from "@/utils/colors";
-import { volumeHigh } from "@/utils/Icons";
 import { Ruler, Weight } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -20,7 +19,6 @@ function page({ params }: Props) {
   const { id } = params;
 
   const barColor = typeColor[activePokemon?.types[0]?.type.name] || "#f9f1f1";
-  const statRows = 10;
 
   // get pokemon by name
   useEffect(() => {
