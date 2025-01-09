@@ -19,6 +19,9 @@ function page({ params }: Props) {
   const { fetchPokemonByName, loading, activePokemon } = useGlobalContext();
   const { id } = params;
 
+  const barColor = typeColor[activePokemon?.types[0]?.type.name] || "#f9f1f1";
+  const statRows = 10;
+
   // get pokemon by name
   useEffect(() => {
     fetchPokemonByName(id);
@@ -36,45 +39,16 @@ function page({ params }: Props) {
           style={{
             background:
               typeColor[
-                activePokemon?.types[
-                  Math.floor(Math.random() * activePokemon?.types.length)
-                ].type.name
+              activePokemon?.types[
+                Math.floor(Math.random() * activePokemon?.types.length)
+              ].type.name
               ],
           }}
         >
           <div className="flex flex-col justify-center gap-6">
-            <div className="flex flex-col gap-1">
-              <div className="flex gap-4">
-                <button
-                  className="px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-[#54a0ff] rounded-full
-              hover:bg-white/90 transition-all duration-300 ease-in-out"
-                  onClick={() => {
-                    const audio = new Audio(activePokemon?.cries.legacy);
-                    audio.play();
-                  }}
-                >
-                  {volumeHigh} Old Cry
-                </button>
-                <button
-                  className="px-4 py-2 flex items-center gap-2 text-sm font-bold bg-white text-[#54a0ff] rounded-full
-              hover:bg-white/90 transition-all duration-300 ease-in-out"
-                  onClick={() => {
-                    const audio = new Audio(activePokemon?.cries.latest);
-                    audio.play();
-                  }}
-                >
-                  {volumeHigh} New Cry
-                </button>
-              </div>
-
-              <h1 className="text-6xl font-bold capitalize text-white drop-shadow-sm">
-                {activePokemon?.name}
-              </h1>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-1 md:grid-cols-2">
               <div className="flex flex-col gap-2">
-                <h2 className="text-2xl font-bold">Abilities</h2>
+                <h2 className="text-2xl font-bold">Ability</h2>
                 <ul className="flex gap-2">
                   {activePokemon?.abilities.map(
                     (ability: any, index: number) => (
@@ -90,7 +64,7 @@ function page({ params }: Props) {
               </div>
 
               <div className="flex flex-col gap-2">
-                <h2 className="text-2xl font-bold">Types</h2>
+                <h2 className="text-2xl font-bold">Type</h2>
 
                 <ul className="flex flex-wrap gap-2">
                   {activePokemon?.types.map((type: any, index: number) => (
@@ -105,9 +79,10 @@ function page({ params }: Props) {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <h2 className="text-2xl font-bold">Base Stats</h2>
-              <ul className="flex flex-col gap-4">
+            {/* Base Stats */}
+            <div className="flex flex-col gap-2" style={{ backgroundImage: `url('/container_bg.png')`, backgroundColor: "#f9f1f1", width: "100%", borderRadius: 8 }}>
+              <h2 className="text-2xl font-bold mt-3 ml-3">Base Stats</h2>
+              <ul className="flex flex-col gap-4 mt-3 ml-3 mr-3 mb-3">
                 {activePokemon?.stats.map((stat: any, index: number) => (
                   <li key={index} className="flex flex-col gap-1">
                     <div className="flex items-center gap-4">
@@ -117,9 +92,10 @@ function page({ params }: Props) {
 
                     <div className="w-full h-3 bg-white/15 rounded-md overflow-hidden mt-1">
                       <div
-                        className={`h-full rounded-md bg-white`}
+                        className={`h-full rounded-md`}
                         style={{
-                          width: `${(stat.base_stat / 200) * 100}%`, // Normalize to max 200
+                          width: `${(stat.base_stat / 200) * 100}%`,
+                          background: barColor
                         }}
                       ></div>
                     </div>
