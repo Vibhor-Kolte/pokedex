@@ -1,6 +1,9 @@
 import React from "react";
 import { usePokemonData } from "./usePokemonData";
 const GloablContext = React.createContext();
+import log from 'loglevel';
+
+log.setLevel('info');
 
 export const GlobalContextProvider = ({ children }) => {
   const {
@@ -34,7 +37,7 @@ export const useGlobalContext = () => {
   const context = React.useContext(GloablContext);
 
   // Add log to check the context value
-  console.log('Context in useGlobalContext:', context);
+  log.debug('Context in useGlobalContext:', context);
 
   if (!context) {
     throw new Error("useGlobalContext must be used within a GlobalContextProvider");

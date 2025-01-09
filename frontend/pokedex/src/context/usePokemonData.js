@@ -126,10 +126,16 @@ export const usePokemonData = () => {
 
   // handle change for search
   const handleSearchChange = (e) => {
+    log.debug('Search query:- ', e.target.value);
     const value = e.target.value;
     setSearchQuery(value);
     debouncedSearch(value);
   };
+
+  // debounce search
+  const debouncedSearch = _.debounce((value) => {
+    searchPokemon(value);
+  }, 500);
 
   // -------------------Use Effects-------------------
   useEffect(() => {
