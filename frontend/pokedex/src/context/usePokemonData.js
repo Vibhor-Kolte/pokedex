@@ -13,6 +13,7 @@ export const usePokemonData = () => {
   const [allPokemon, setAllPokemon] = useState([]);
   const [pokemonListDetails, setPokemonListDetails] = useState([]);
   const [activePokemon, setActivePokemon] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [originalPokemonListDetails, setOriginalPokemonListDetails] = useState(
     []
   );
@@ -83,6 +84,53 @@ export const usePokemonData = () => {
     }
   };
 
+  // search pokemon
+  const searchPokemon = async (query) => {
+    if (!query) {
+      setSearchQuery("");
+
+      const details = await Promise.all(
+        pokemonList.map(async (pokemon) => {
+          const res = await axios.get(pokemon.url);
+
+          return res.data;
+        })
+      );
+
+      setPokemonListDetails(details);
+      return;
+    }
+
+    setLoading(true);
+
+    const filteredPokemon = allPokemon.filter((pokemon) => {
+      return pokemon.name.toLowerCase().includes(query.toLowerCase());
+    });
+
+    try {
+      // fetch details for the filtered pokemon
+      const filtered = await Promise.all(
+        filteredPokemon.map(async (pokemon) => {
+          const res = await axios.get(pokemon.url);
+          return res.data;
+        })
+      );
+
+      setLoading(false);
+
+      setPokemonListDetails(filtered);
+    } catch (error) {
+      console.error("Error searching pokemon", error);
+    }
+  };
+
+  // handle change for search
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    debouncedSearch(value);
+  };
+
   // -------------------Use Effects-------------------
   useEffect(() => {
     console.log("Fetching initial Pokémon data...");
@@ -105,5 +153,6 @@ export const usePokemonData = () => {
     pokemonListDetails,
     fetchPokemonByName,
     activePokemon,
+    searchQuery, handleSearchChange,
   };
 };
