@@ -8,24 +8,20 @@ log.setLevel('info');
 export const GlobalContextProvider = ({ children }) => {
   const {
     loading,
-    fetchPokemon,
-    pokemonList,
-    pokemonListDetails,
-    fetchPokemonByName,
-    activePokemon,
+    fetchPokemon, pokemonList, pokemonListDetails,
+    fetchPokemonByName, activePokemon,
     searchQuery, handleSearchChange,
+    handleFilterChange, filters, clearFilters,
   } = usePokemonData();
 
   return (
     <GloablContext.Provider
       value={{
         loading,
-        fetchPokemon,
-        pokemonList,
-        pokemonListDetails,
-        fetchPokemonByName,
-        activePokemon,
+        fetchPokemon, pokemonList, pokemonListDetails,
+        fetchPokemonByName, activePokemon,
         searchQuery, handleSearchChange,
+        handleFilterChange, filters, clearFilters,
       }}
     >
       {children}

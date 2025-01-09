@@ -8,15 +8,26 @@ log.setLevel('info');
 
 export const usePokemonData = () => {
   const [loading, setLoading] = useState(false);
-  const [pokemonList, setPokemonList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [pokemonList, setPokemonList] = useState([]);
   const [allPokemon, setAllPokemon] = useState([]);
   const [pokemonListDetails, setPokemonListDetails] = useState([]);
-  const [activePokemon, setActivePokemon] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
   const [originalPokemonListDetails, setOriginalPokemonListDetails] = useState(
     []
   );
+
+  const [activePokemon, setActivePokemon] = useState(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [filters, setFilters] = useState({
+    type: "",
+    ability: "",
+    weight: "",
+    height: "",
+    sortOrder: "",
+  });  
 
   // fetch initial pokemons
   const fetchPokemon = async (page = 1) => {
@@ -132,17 +143,36 @@ export const usePokemonData = () => {
     debouncedSearch(value);
   };
 
-  // debounce search
+  // debounce search(using lodash)
   const debouncedSearch = _.debounce((value) => {
     searchPokemon(value);
   }, 500);
 
+  // handle change for filters
+  const handleFilterChange = (key, value) => {
+    log.debug(`Filter key: ${key}, value: ${value}`);
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // clear filters
+  const clearFilters = () => {
+    setFilters({
+      type: "",
+      ability: "",
+      weight: "",
+      height: "",
+      sortOrder: "",
+    });
+    setSearchQuery("");
+    setPokemonListDetails(originalPokemonListDetails);
+  };
+
   // -------------------Use Effects-------------------
   useEffect(() => {
-    console.log("Fetching initial Pokémon data...");
+    log.debug("Fetching initial Pokémon data...");
     fetchPokemon(); // Fetch initial Pokémon data
 
-    console.log("Fetching all Pokémon data...");
+    log.debug("Fetching all Pokémon data...");
     fetchAllPokemon(); // Fetch the full list of Pokémon
   }, []);
 
@@ -153,12 +183,10 @@ export const usePokemonData = () => {
   }, [pokemonList]);
 
   return {
-    fetchPokemon,
     loading,
-    pokemonList,
-    pokemonListDetails,
-    fetchPokemonByName,
-    activePokemon,
+    fetchPokemon, pokemonList, pokemonListDetails,
+    fetchPokemonByName, activePokemon,
     searchQuery, handleSearchChange,
+    handleFilterChange, filters, clearFilters,
   };
 };

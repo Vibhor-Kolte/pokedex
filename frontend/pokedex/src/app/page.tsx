@@ -4,6 +4,7 @@ import PokemonCard from "@/components/PokemonCard";
 import Header from "../components/Header";
 import { useGlobalContext } from "@/context/globalContext";
 import SearchForm from "@/components/SearchForm";
+import Filters from "@/components/Filters";
 
 
 export default function Home() {
@@ -15,6 +16,10 @@ export default function Home() {
 
       <section className="mt-10 flex items-center justify-center">
         <SearchForm/>
+      </section>
+
+      <section>
+        <Filters />
       </section>
 
       <section className="min-h-[91vh]">
