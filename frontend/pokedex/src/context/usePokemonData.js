@@ -145,6 +145,8 @@ export const usePokemonData = () => {
 
   // debounce search(using lodash)
   const debouncedSearch = _.debounce((value) => {
+    setFilters((prev) => ({ ...prev, query: value }));
+    filterPokemon();
     searchPokemon(value);
   }, 500);
 
