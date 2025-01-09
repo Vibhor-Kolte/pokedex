@@ -224,6 +224,11 @@ export const usePokemonData = () => {
     setPokemonListDetails(originalPokemonListDetails);
   };
 
+  // load more pokemons as user asks
+  const loadMore = () => {
+    fetchPokemon(currentPage + 1);
+  };
+
   // -------------------Use Effects-------------------
   // Initial Renders
   useEffect(() => {
@@ -251,5 +256,6 @@ export const usePokemonData = () => {
     fetchPokemonByName, activePokemon,
     searchQuery, handleSearchChange,
     handleFilterChange, filters, clearFilters,
+    loadMore,
   };
 };

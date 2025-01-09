@@ -5,17 +5,18 @@ import Header from "../components/Header";
 import { useGlobalContext } from "@/context/globalContext";
 import SearchForm from "@/components/SearchForm";
 import Filters from "@/components/Filters";
+import { arrowAngleDown } from "@/utils/Icons";
 
 
 export default function Home() {
-  const { pokemonListDetails, loading } = useGlobalContext();
+  const { pokemonListDetails, loading, loadMore } = useGlobalContext();
 
   return (
     <main>
-      <Header/>
+      <Header />
 
       <section className="mt-10 flex items-center justify-center">
-        <SearchForm/>
+        <SearchForm />
       </section>
 
       <section>
@@ -30,6 +31,19 @@ export default function Home() {
             })}
         </div>
       </section>
-    </main> 
+
+      {pokemonListDetails.length > 38 && (
+        <div className="mt-4 mb-10 flex items-center justify-center">
+          <button
+            onClick={loadMore}
+            className="py-2 px-6 flex items-center gap-2 bg-[#6c5ce7] rounded-full shadow-md font-medium
+            hover:bg-green-400 text-white transition-all duration-300 ease-in-out"
+          >
+            <span className="text-left">{arrowAngleDown}</span>Load More
+          </button>
+        </div>
+      )}
+
+    </main>
   );
 }
